@@ -41,14 +41,14 @@ struct AppTests {
             
             try await app.testing().test(.GET, "todos", afterResponse: { res async throws in
                 #expect(res.status == .ok)
-                #expect(try res.content.decode([TodoDTO].self) == sampleTodos.map { $0.toDTO()} )
+                #expect(try res.content.decode([TodoContent].self) == sampleTodos.map { $0.toDTO()} )
             })
         }
     }
     
     @Test("Creating a Todo")
     func createTodo() async throws {
-        let newDTO = TodoDTO(id: nil, title: "test")
+        let newDTO = TodoContent(id: nil, title: "test")
         
         try await withApp { app in
             try await app.testing().test(.POST, "todos", beforeRequest: { req in
@@ -78,7 +78,7 @@ struct AppTests {
 }
 
 
-extension TodoDTO: Equatable {
+extension TodoContent: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.id == rhs.id && lhs.title == rhs.title
     }

@@ -1,7 +1,7 @@
 import Fluent
 import Vapor
 
-struct TodoDTO: Content {
+struct TodoContent: Content {
     var id: UUID?
     var title: String?
     

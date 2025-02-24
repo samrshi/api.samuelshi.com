@@ -1,7 +1,7 @@
-import Vapor
 import Logging
 import NIOCore
 import NIOPosix
+import Vapor
 
 @main
 enum Entrypoint {
@@ -26,6 +26,7 @@ enum Entrypoint {
             try? await app.asyncShutdown()
             throw error
         }
+        
         try await app.asyncShutdown()
     }
 }

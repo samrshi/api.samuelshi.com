@@ -20,7 +20,7 @@ final class Todo: Model, @unchecked Sendable {
         self.title = title
     }
     
-    func toDTO() -> TodoDTO {
+    func toDTO() -> TodoContent {
         .init(
             id: self.id,
             title: self.$title.value

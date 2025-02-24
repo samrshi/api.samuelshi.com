@@ -13,13 +13,13 @@ struct TodoController: RouteCollection {
     }
 
     @Sendable
-    func index(req: Request) async throws -> [TodoDTO] {
+    func index(req: Request) async throws -> [TodoContent] {
         try await Todo.query(on: req.db).all().map { $0.toDTO() }
     }
 
     @Sendable
-    func create(req: Request) async throws -> TodoDTO {
-        let todo = try req.content.decode(TodoDTO.self).toModel()
+    func create(req: Request) async throws -> TodoContent {
+        let todo = try req.content.decode(TodoContent.self).toModel()
 
         try await todo.save(on: req.db)
         return todo.toDTO()
