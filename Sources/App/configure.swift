@@ -13,8 +13,7 @@ public func configure(_ app: Application) async throws {
     app.views.use(.leaf)
 
     if let databaseURL = Environment.get("DATABASE_URL") {
-        // TODO: Actually connect to production db
-        _ = databaseURL
+        try app.databases.use(.postgres(url: databaseURL), as: .psql)
     } else {
         let localConfig = SQLPostgresConfiguration(
             hostname: "localhost",
