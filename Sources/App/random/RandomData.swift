@@ -24,203 +24,203 @@ enum RandomData {
     
     static let definitions = [
         Definition(
-            word: "apple",
+            word: "Apple",
             meaning: "A round fruit with red, yellow, or green skin and a white interior"
         ),
         Definition(
-            word: "water",
+            word: "Water",
             meaning: "A transparent, odorless, tasteless liquid that forms the seas, lakes, rivers, and rain"
         ),
         Definition(
-            word: "smile",
+            word: "Smile",
             meaning: "A pleased, kind, or amused facial expression, typically with the corners of the mouth turned up"
         ),
         Definition(
-            word: "book",
+            word: "Book",
             meaning: "A written or printed work consisting of pages glued or sewn together along one side"
         ),
         Definition(
-            word: "friend",
+            word: "Friend",
             meaning: "A person whom one knows and with whom one has a bond of mutual affection"
         ),
         Definition(
-            word: "time",
+            word: "Time",
             meaning: "The indefinite continued progress of existence and events in the past, present, and future"
         ),
         Definition(
-            word: "music",
+            word: "Music",
             meaning: "Vocal or instrumental sounds combined in such a way as to produce beauty of form, harmony, and expression of emotion"
         ),
         Definition(
-            word: "tree",
+            word: "Tree",
             meaning: "A woody perennial plant with a single main stem or trunk, supporting branches and leaves"
         ),
         Definition(
-            word: "love",
+            word: "Love",
             meaning: "An intense feeling of deep affection or fondness for someone or something"
         ),
         Definition(
-            word: "sun",
+            word: "Sun",
             meaning: "The star around which the earth orbits, providing light and heat for the earth"
         ),
         Definition(
-            word: "car",
+            word: "Car",
             meaning: "A four-wheeled road vehicle that is powered by an engine and designed to carry passengers"
         ),
         Definition(
-            word: "dog",
+            word: "Dog",
             meaning: "A domesticated carnivorous mammal that typically has a long snout, an acute sense of smell, and a barking voice"
         ),
         Definition(
-            word: "city",
+            word: "City",
             meaning: "A large town, typically with a cathedral, considerable population, and local government"
         ),
         Definition(
-            word: "sleep",
+            word: "Sleep",
             meaning: "A condition of body and mind in which consciousness is temporarily lost and the nervous system is inactive"
         ),
         Definition(
-            word: "computer",
+            word: "Computer",
             meaning: "An electronic device capable of storing, retrieving, and processing data according to a series of instructions"
         ),
         Definition(
-            word: "family",
+            word: "Family",
             meaning: "A group consisting of parents and children living together in a household"
         ),
         Definition(
-            word: "coffee",
+            word: "Coffee",
             meaning: "A hot drink made from the roasted and ground seeds of a tropical shrub"
         ),
         Definition(
-            word: "money",
+            word: "Money",
             meaning: "A current medium of exchange in the form of coins and banknotes"
         ),
         Definition(
-            word: "fire",
+            word: "Fire",
             meaning: "The visible effect of combustion, characterized by flames and heat"
         ),
         Definition(
-            word: "ocean",
+            word: "Ocean",
             meaning: "A very large expanse of sea, particularly each of the main areas into which the sea is divided"
         ),
         Definition(
-            word: "dream",
+            word: "Dream",
             meaning: "A series of thoughts, images, and sensations occurring in a person's mind during sleep"
         ),
         Definition(
-            word: "light",
+            word: "Light",
             meaning: "The natural agent that stimulates sight and makes things visible"
         ),
         Definition(
-            word: "heart",
+            word: "Heart",
             meaning: "A hollow muscular organ that pumps blood through the circulatory system"
         ),
         Definition(
-            word: "phone",
+            word: "Phone",
             meaning: "A device used to transmit sound, especially speech, over a distance"
         ),
         Definition(
-            word: "sky",
+            word: "Sky",
             meaning: "The region of the atmosphere and outer space seen from the earth"
         ),
         Definition(
-            word: "flower",
+            word: "Flower",
             meaning: "The seed-bearing part of a plant, consisting of reproductive organs surrounded by colorful petals"
         ),
         Definition(
-            word: "summer",
+            word: "Summer",
             meaning: "The warmest season of the year, following spring and preceding autumn"
         ),
         Definition(
-            word: "peace",
+            word: "Peace",
             meaning: "Freedom from disturbance; tranquility or a state of mutual harmony between people or groups"
         ),
         Definition(
-            word: "doctor",
+            word: "Doctor",
             meaning: "A qualified practitioner of medicine; a physician"
         ),
         Definition(
-            word: "beach",
+            word: "Beach",
             meaning: "A pebbly or sandy shore, especially by the sea between high and low water marks"
         ),
         Definition(
-            word: "snow",
+            word: "Snow",
             meaning: "Atmospheric water vapor frozen into ice crystals and falling in light white flakes"
         ),
         Definition(
-            word: "river",
+            word: "River",
             meaning: "A large natural stream of water flowing in a channel to the sea, a lake, or another such stream"
         ),
         Definition(
-            word: "movie",
+            word: "Movie",
             meaning: "A story or event recorded by a camera as a set of moving images"
         ),
         Definition(
-            word: "dance",
+            word: "Dance",
             meaning: "Move rhythmically to music, typically following a set sequence of steps"
         ),
         Definition(
-            word: "garden",
+            word: "Garden",
             meaning: "A piece of ground, often near a house, used for growing flowers, fruit, or vegetables"
         ),
         Definition(
-            word: "morning",
+            word: "Morning",
             meaning: "The period of time from sunrise to noon"
         ),
         Definition(
-            word: "memory",
+            word: "Memory",
             meaning: "The faculty by which the mind stores and remembers information"
         ),
         Definition(
-            word: "forest",
+            word: "Forest",
             meaning: "A large area covered chiefly with trees and undergrowth"
         ),
         Definition(
-            word: "game",
+            word: "Game",
             meaning: "An activity engaged in for diversion or amusement, often with rules"
         ),
         Definition(
-            word: "rain",
+            word: "Rain",
             meaning: "Water that falls in drops from clouds in the sky"
         ),
         Definition(
-            word: "freedom",
+            word: "Freedom",
             meaning: "The power or right to act, speak, or think as one wants without hindrance or restraint"
         ),
         Definition(
-            word: "chocolate",
+            word: "Chocolate",
             meaning: "A food preparation made from roasted and ground cacao seeds"
         ),
         Definition(
-            word: "library",
+            word: "Library",
             meaning: "A building or room containing collections of books, periodicals, and sometimes films for use or borrowing"
         ),
         Definition(
-            word: "mountain",
+            word: "Mountain",
             meaning: "A large natural elevation of the earth's surface rising abruptly from the surrounding level"
         ),
         Definition(
-            word: "island",
+            word: "Island",
             meaning: "A piece of land surrounded by water"
         ),
         Definition(
-            word: "diamond",
+            word: "Diamond",
             meaning: "A precious gemstone consisting of a clear and colorless crystalline form of pure carbon"
         ),
         Definition(
-            word: "rocket",
+            word: "Rocket",
             meaning: "A cylindrical projectile that can be propelled to a great height or distance by the combustion of its contents"
         ),
         Definition(
-            word: "rainbow",
+            word: "Rainbow",
             meaning: "An arch of colors formed in the sky caused by the refraction and dispersion of the sun's light by rain or other water droplets"
         ),
         Definition(
-            word: "castle",
+            word: "Castle",
             meaning: "A large building, typically of the medieval period, fortified against attack with thick walls and towers"
         ),
         Definition(
-            word: "elephant",
+            word: "Elephant",
             meaning: "A very large plant-eating mammal with a prehensile trunk, long curved ivory tusks, and large ears"
         )
     ]
