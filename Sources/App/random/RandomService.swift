@@ -29,12 +29,12 @@ final class RandomService: Sendable {
         }
     }
     
-    func randomDefinition() throws -> Definition {
-        guard let definition = RandomData.definitions.randomElement() else {
-            throw Abort(.internalServerError, reason: "Definition list unexpectedly empty.")
-        }
+    func randomDefinitions(count: Int) throws -> [Definition] {
+        let count = min(count, RandomData.definitions.count)
         
-        return definition
+        return (1 ... count).compactMap { _ in
+            RandomData.definitions.indices.randomElement().map { RandomData.definitions[$0] }
+        }
     }
     
     func randomRecipe() throws -> Recipe {

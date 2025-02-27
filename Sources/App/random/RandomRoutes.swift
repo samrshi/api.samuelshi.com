@@ -14,7 +14,7 @@ struct RandomRoutes: RouteCollection {
         let routes = routes.grouped("random")
         routes.get("word") { try word(request: $0) }
         routes.get("words") { try words(request: $0) }
-        routes.get("definition") { try definition(request: $0) }
+        routes.get("definitions") { try definitions(request: $0) }
         routes.get("recipe") { try recipe(request: $0) }
     }
     
@@ -26,8 +26,8 @@ struct RandomRoutes: RouteCollection {
         try service.randomWords(count: 10)
     }
     
-    func definition(request: Request) throws -> Definition {
-        try service.randomDefinition()
+    func definitions(request: Request) throws -> [Definition] {
+        try service.randomDefinitions(count: 10)
     }
     
     func recipe(request: Request) throws -> Recipe {
