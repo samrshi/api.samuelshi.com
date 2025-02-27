@@ -9,7 +9,7 @@ import Vapor
 
 struct Definition: Content {
     let word: String
-    let definition: String
+    let meaning: String
 }
 
 struct Ingredient: Content {

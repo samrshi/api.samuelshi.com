@@ -25,203 +25,203 @@ enum RandomData {
     static let definitions = [
         Definition(
             word: "apple",
-            definition: "A round fruit with red, yellow, or green skin and a white interior"
+            meaning: "A round fruit with red, yellow, or green skin and a white interior"
         ),
         Definition(
             word: "water",
-            definition: "A transparent, odorless, tasteless liquid that forms the seas, lakes, rivers, and rain"
+            meaning: "A transparent, odorless, tasteless liquid that forms the seas, lakes, rivers, and rain"
         ),
         Definition(
             word: "smile",
-            definition: "A pleased, kind, or amused facial expression, typically with the corners of the mouth turned up"
+            meaning: "A pleased, kind, or amused facial expression, typically with the corners of the mouth turned up"
         ),
         Definition(
             word: "book",
-            definition: "A written or printed work consisting of pages glued or sewn together along one side"
+            meaning: "A written or printed work consisting of pages glued or sewn together along one side"
         ),
         Definition(
             word: "friend",
-            definition: "A person whom one knows and with whom one has a bond of mutual affection"
+            meaning: "A person whom one knows and with whom one has a bond of mutual affection"
         ),
         Definition(
             word: "time",
-            definition: "The indefinite continued progress of existence and events in the past, present, and future"
+            meaning: "The indefinite continued progress of existence and events in the past, present, and future"
         ),
         Definition(
             word: "music",
-            definition: "Vocal or instrumental sounds combined in such a way as to produce beauty of form, harmony, and expression of emotion"
+            meaning: "Vocal or instrumental sounds combined in such a way as to produce beauty of form, harmony, and expression of emotion"
         ),
         Definition(
             word: "tree",
-            definition: "A woody perennial plant with a single main stem or trunk, supporting branches and leaves"
+            meaning: "A woody perennial plant with a single main stem or trunk, supporting branches and leaves"
         ),
         Definition(
             word: "love",
-            definition: "An intense feeling of deep affection or fondness for someone or something"
+            meaning: "An intense feeling of deep affection or fondness for someone or something"
         ),
         Definition(
             word: "sun",
-            definition: "The star around which the earth orbits, providing light and heat for the earth"
+            meaning: "The star around which the earth orbits, providing light and heat for the earth"
         ),
         Definition(
             word: "car",
-            definition: "A four-wheeled road vehicle that is powered by an engine and designed to carry passengers"
+            meaning: "A four-wheeled road vehicle that is powered by an engine and designed to carry passengers"
         ),
         Definition(
             word: "dog",
-            definition: "A domesticated carnivorous mammal that typically has a long snout, an acute sense of smell, and a barking voice"
+            meaning: "A domesticated carnivorous mammal that typically has a long snout, an acute sense of smell, and a barking voice"
         ),
         Definition(
             word: "city",
-            definition: "A large town, typically with a cathedral, considerable population, and local government"
+            meaning: "A large town, typically with a cathedral, considerable population, and local government"
         ),
         Definition(
             word: "sleep",
-            definition: "A condition of body and mind in which consciousness is temporarily lost and the nervous system is inactive"
+            meaning: "A condition of body and mind in which consciousness is temporarily lost and the nervous system is inactive"
         ),
         Definition(
             word: "computer",
-            definition: "An electronic device capable of storing, retrieving, and processing data according to a series of instructions"
+            meaning: "An electronic device capable of storing, retrieving, and processing data according to a series of instructions"
         ),
         Definition(
             word: "family",
-            definition: "A group consisting of parents and children living together in a household"
+            meaning: "A group consisting of parents and children living together in a household"
         ),
         Definition(
             word: "coffee",
-            definition: "A hot drink made from the roasted and ground seeds of a tropical shrub"
+            meaning: "A hot drink made from the roasted and ground seeds of a tropical shrub"
         ),
         Definition(
             word: "money",
-            definition: "A current medium of exchange in the form of coins and banknotes"
+            meaning: "A current medium of exchange in the form of coins and banknotes"
         ),
         Definition(
             word: "fire",
-            definition: "The visible effect of combustion, characterized by flames and heat"
+            meaning: "The visible effect of combustion, characterized by flames and heat"
         ),
         Definition(
             word: "ocean",
-            definition: "A very large expanse of sea, particularly each of the main areas into which the sea is divided"
+            meaning: "A very large expanse of sea, particularly each of the main areas into which the sea is divided"
         ),
         Definition(
             word: "dream",
-            definition: "A series of thoughts, images, and sensations occurring in a person's mind during sleep"
+            meaning: "A series of thoughts, images, and sensations occurring in a person's mind during sleep"
         ),
         Definition(
             word: "light",
-            definition: "The natural agent that stimulates sight and makes things visible"
+            meaning: "The natural agent that stimulates sight and makes things visible"
         ),
         Definition(
             word: "heart",
-            definition: "A hollow muscular organ that pumps blood through the circulatory system"
+            meaning: "A hollow muscular organ that pumps blood through the circulatory system"
         ),
         Definition(
             word: "phone",
-            definition: "A device used to transmit sound, especially speech, over a distance"
+            meaning: "A device used to transmit sound, especially speech, over a distance"
         ),
         Definition(
             word: "sky",
-            definition: "The region of the atmosphere and outer space seen from the earth"
+            meaning: "The region of the atmosphere and outer space seen from the earth"
         ),
         Definition(
             word: "flower",
-            definition: "The seed-bearing part of a plant, consisting of reproductive organs surrounded by colorful petals"
+            meaning: "The seed-bearing part of a plant, consisting of reproductive organs surrounded by colorful petals"
         ),
         Definition(
             word: "summer",
-            definition: "The warmest season of the year, following spring and preceding autumn"
+            meaning: "The warmest season of the year, following spring and preceding autumn"
         ),
         Definition(
             word: "peace",
-            definition: "Freedom from disturbance; tranquility or a state of mutual harmony between people or groups"
+            meaning: "Freedom from disturbance; tranquility or a state of mutual harmony between people or groups"
         ),
         Definition(
             word: "doctor",
-            definition: "A qualified practitioner of medicine; a physician"
+            meaning: "A qualified practitioner of medicine; a physician"
         ),
         Definition(
             word: "beach",
-            definition: "A pebbly or sandy shore, especially by the sea between high and low water marks"
+            meaning: "A pebbly or sandy shore, especially by the sea between high and low water marks"
         ),
         Definition(
             word: "snow",
-            definition: "Atmospheric water vapor frozen into ice crystals and falling in light white flakes"
+            meaning: "Atmospheric water vapor frozen into ice crystals and falling in light white flakes"
         ),
         Definition(
             word: "river",
-            definition: "A large natural stream of water flowing in a channel to the sea, a lake, or another such stream"
+            meaning: "A large natural stream of water flowing in a channel to the sea, a lake, or another such stream"
         ),
         Definition(
             word: "movie",
-            definition: "A story or event recorded by a camera as a set of moving images"
+            meaning: "A story or event recorded by a camera as a set of moving images"
         ),
         Definition(
             word: "dance",
-            definition: "Move rhythmically to music, typically following a set sequence of steps"
+            meaning: "Move rhythmically to music, typically following a set sequence of steps"
         ),
         Definition(
             word: "garden",
-            definition: "A piece of ground, often near a house, used for growing flowers, fruit, or vegetables"
+            meaning: "A piece of ground, often near a house, used for growing flowers, fruit, or vegetables"
         ),
         Definition(
             word: "morning",
-            definition: "The period of time from sunrise to noon"
+            meaning: "The period of time from sunrise to noon"
         ),
         Definition(
             word: "memory",
-            definition: "The faculty by which the mind stores and remembers information"
+            meaning: "The faculty by which the mind stores and remembers information"
         ),
         Definition(
             word: "forest",
-            definition: "A large area covered chiefly with trees and undergrowth"
+            meaning: "A large area covered chiefly with trees and undergrowth"
         ),
         Definition(
             word: "game",
-            definition: "An activity engaged in for diversion or amusement, often with rules"
+            meaning: "An activity engaged in for diversion or amusement, often with rules"
         ),
         Definition(
             word: "rain",
-            definition: "Water that falls in drops from clouds in the sky"
+            meaning: "Water that falls in drops from clouds in the sky"
         ),
         Definition(
             word: "freedom",
-            definition: "The power or right to act, speak, or think as one wants without hindrance or restraint"
+            meaning: "The power or right to act, speak, or think as one wants without hindrance or restraint"
         ),
         Definition(
             word: "chocolate",
-            definition: "A food preparation made from roasted and ground cacao seeds"
+            meaning: "A food preparation made from roasted and ground cacao seeds"
         ),
         Definition(
             word: "library",
-            definition: "A building or room containing collections of books, periodicals, and sometimes films for use or borrowing"
+            meaning: "A building or room containing collections of books, periodicals, and sometimes films for use or borrowing"
         ),
         Definition(
             word: "mountain",
-            definition: "A large natural elevation of the earth's surface rising abruptly from the surrounding level"
+            meaning: "A large natural elevation of the earth's surface rising abruptly from the surrounding level"
         ),
         Definition(
             word: "island",
-            definition: "A piece of land surrounded by water"
+            meaning: "A piece of land surrounded by water"
         ),
         Definition(
             word: "diamond",
-            definition: "A precious gemstone consisting of a clear and colorless crystalline form of pure carbon"
+            meaning: "A precious gemstone consisting of a clear and colorless crystalline form of pure carbon"
         ),
         Definition(
             word: "rocket",
-            definition: "A cylindrical projectile that can be propelled to a great height or distance by the combustion of its contents"
+            meaning: "A cylindrical projectile that can be propelled to a great height or distance by the combustion of its contents"
         ),
         Definition(
             word: "rainbow",
-            definition: "An arch of colors formed in the sky caused by the refraction and dispersion of the sun's light by rain or other water droplets"
+            meaning: "An arch of colors formed in the sky caused by the refraction and dispersion of the sun's light by rain or other water droplets"
         ),
         Definition(
             word: "castle",
-            definition: "A large building, typically of the medieval period, fortified against attack with thick walls and towers"
+            meaning: "A large building, typically of the medieval period, fortified against attack with thick walls and towers"
         ),
         Definition(
             word: "elephant",
-            definition: "A very large plant-eating mammal with a prehensile trunk, long curved ivory tusks, and large ears"
+            meaning: "A very large plant-eating mammal with a prehensile trunk, long curved ivory tusks, and large ears"
         )
     ]
     
