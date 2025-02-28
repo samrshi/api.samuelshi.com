@@ -9,19 +9,19 @@ import Foundation
 
 enum BasketballData {
     static let basketballGames: [BasketballGame] = [
-        // Men's November games
+        // Men November games
         BasketballGame(
             id: 1,
-            team: "Men's",
+            team: "Men",
             date: "11/04/24",
             opponent: "Elon",
             isHomeGame: true,
             score: Score(unc: 90, opponent: 76)
         ),
-        // Women's November games
+        // Women November games
         BasketballGame(
             id: 2,
-            team: "Women's",
+            team: "Women",
             date: "11/04/24",
             opponent: "Charleston So.",
             isHomeGame: true,
@@ -29,7 +29,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 3,
-            team: "Women's",
+            team: "Women",
             date: "11/07/24",
             opponent: "UNCW",
             isHomeGame: true,
@@ -37,7 +37,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 4,
-            team: "Men's",
+            team: "Men",
             date: "11/08/24",
             opponent: "Kansas",
             isHomeGame: false,
@@ -45,7 +45,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 5,
-            team: "Women's",
+            team: "Women",
             date: "11/12/24",
             opponent: "N.C. A&T",
             isHomeGame: false,
@@ -53,7 +53,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 6,
-            team: "Men's",
+            team: "Men",
             date: "11/15/24",
             opponent: "American",
             isHomeGame: true,
@@ -61,7 +61,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 7,
-            team: "Women's",
+            team: "Women",
             date: "11/15/24",
             opponent: "UConn",
             isHomeGame: false,
@@ -69,7 +69,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 8,
-            team: "Men's",
+            team: "Men",
             date: "11/22/24",
             opponent: "Hawaii",
             isHomeGame: false,
@@ -77,7 +77,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 9,
-            team: "Women's",
+            team: "Women",
             date: "11/23/24",
             opponent: "Ball St.",
             isHomeGame: false,
@@ -85,7 +85,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 10,
-            team: "Women's",
+            team: "Women",
             date: "11/24/24",
             opponent: "Villanova",
             isHomeGame: false,
@@ -93,7 +93,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 11,
-            team: "Men's",
+            team: "Men",
             date: "11/25/24",
             opponent: "Dayton",
             isHomeGame: false,
@@ -101,7 +101,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 12,
-            team: "Women's",
+            team: "Women",
             date: "11/25/24",
             opponent: "Indiana",
             isHomeGame: false,
@@ -109,7 +109,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 13,
-            team: "Men's",
+            team: "Men",
             date: "11/26/24",
             opponent: "Auburn",
             isHomeGame: false,
@@ -117,7 +117,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 14,
-            team: "Men's",
+            team: "Men",
             date: "11/27/24",
             opponent: "Michigan St.",
             isHomeGame: false,
@@ -125,7 +125,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 15,
-            team: "Women's",
+            team: "Women",
             date: "11/29/24",
             opponent: "N.C. Central",
             isHomeGame: true,
@@ -135,7 +135,7 @@ enum BasketballData {
         // December games
         BasketballGame(
             id: 16,
-            team: "Men's",
+            team: "Men",
             date: "12/04/24",
             opponent: "Alabama",
             isHomeGame: true,
@@ -143,7 +143,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 17,
-            team: "Women's",
+            team: "Women",
             date: "12/05/24",
             opponent: "Kentucky",
             isHomeGame: true,
@@ -151,7 +151,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 18,
-            team: "Men's",
+            team: "Men",
             date: "12/07/24",
             opponent: "Georgia Tech",
             isHomeGame: true,
@@ -159,7 +159,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 19,
-            team: "Women's",
+            team: "Women",
             date: "12/08/24",
             opponent: "Coppin St.",
             isHomeGame: true,
@@ -167,7 +167,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 20,
-            team: "Women's",
+            team: "Women",
             date: "12/11/24",
             opponent: "UNC Greensboro",
             isHomeGame: true,
@@ -175,7 +175,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 21,
-            team: "Men's",
+            team: "Men",
             date: "12/14/24",
             opponent: "La Salle",
             isHomeGame: true,
@@ -183,7 +183,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 22,
-            team: "Women's",
+            team: "Women",
             date: "12/15/24",
             opponent: "Georgia Tech",
             isHomeGame: true,
@@ -191,7 +191,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 23,
-            team: "Men's",
+            team: "Men",
             date: "12/17/24",
             opponent: "Florida",
             isHomeGame: false,
@@ -199,7 +199,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 24,
-            team: "Women's",
+            team: "Women",
             date: "12/18/24",
             opponent: "Florida",
             isHomeGame: false,
@@ -207,7 +207,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 25,
-            team: "Men's",
+            team: "Men",
             date: "12/21/24",
             opponent: "UCLA",
             isHomeGame: false,
@@ -215,7 +215,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 26,
-            team: "Women's",
+            team: "Women",
             date: "12/21/24",
             opponent: "Norfolk St.",
             isHomeGame: true,
@@ -223,7 +223,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 27,
-            team: "Men's",
+            team: "Men",
             date: "12/29/24",
             opponent: "Campbell",
             isHomeGame: true,
@@ -231,7 +231,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 28,
-            team: "Women's",
+            team: "Women",
             date: "12/29/24",
             opponent: "Miami (FL)",
             isHomeGame: false,
@@ -241,7 +241,7 @@ enum BasketballData {
         // January games
         BasketballGame(
             id: 29,
-            team: "Men's",
+            team: "Men",
             date: "01/01/25",
             opponent: "Louisville",
             isHomeGame: false,
@@ -249,7 +249,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 30,
-            team: "Men's",
+            team: "Men",
             date: "01/04/25",
             opponent: "Notre Dame",
             isHomeGame: false,
@@ -257,7 +257,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 31,
-            team: "Women's",
+            team: "Women",
             date: "01/05/25",
             opponent: "Notre Dame",
             isHomeGame: true,
@@ -265,7 +265,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 32,
-            team: "Men's",
+            team: "Men",
             date: "01/07/25",
             opponent: "SMU",
             isHomeGame: true,
@@ -273,7 +273,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 33,
-            team: "Women's",
+            team: "Women",
             date: "01/09/25",
             opponent: "Duke",
             isHomeGame: true,
@@ -281,7 +281,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 34,
-            team: "Men's",
+            team: "Men",
             date: "01/11/25",
             opponent: "NC State",
             isHomeGame: false,
@@ -289,7 +289,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 35,
-            team: "Women's",
+            team: "Women",
             date: "01/12/25",
             opponent: "Boston College",
             isHomeGame: true,
@@ -297,7 +297,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 36,
-            team: "Men's",
+            team: "Men",
             date: "01/15/25",
             opponent: "California",
             isHomeGame: true,
@@ -305,7 +305,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 37,
-            team: "Women's",
+            team: "Women",
             date: "01/16/25",
             opponent: "SMU",
             isHomeGame: false,
@@ -313,7 +313,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 38,
-            team: "Men's",
+            team: "Men",
             date: "01/18/25",
             opponent: "Stanford",
             isHomeGame: true,
@@ -321,7 +321,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 39,
-            team: "Women's",
+            team: "Women",
             date: "01/19/25",
             opponent: "Pittsburgh",
             isHomeGame: false,
@@ -329,7 +329,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 40,
-            team: "Men's",
+            team: "Men",
             date: "01/21/25",
             opponent: "Wake Forest",
             isHomeGame: false,
@@ -337,7 +337,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 41,
-            team: "Women's",
+            team: "Women",
             date: "01/23/25",
             opponent: "Wake Forest",
             isHomeGame: true,
@@ -345,7 +345,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 42,
-            team: "Men's",
+            team: "Men",
             date: "01/25/25",
             opponent: "Boston College",
             isHomeGame: true,
@@ -353,7 +353,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 43,
-            team: "Women's",
+            team: "Women",
             date: "01/26/25",
             opponent: "Florida St.",
             isHomeGame: true,
@@ -361,7 +361,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 44,
-            team: "Men's",
+            team: "Men",
             date: "01/28/25",
             opponent: "Pittsburgh",
             isHomeGame: false,
@@ -369,7 +369,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 45,
-            team: "Women's",
+            team: "Women",
             date: "01/30/25",
             opponent: "California",
             isHomeGame: false,
@@ -379,7 +379,7 @@ enum BasketballData {
         // February games
         BasketballGame(
             id: 46,
-            team: "Men's",
+            team: "Men",
             date: "02/01/25",
             opponent: "Duke",
             isHomeGame: false,
@@ -387,7 +387,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 47,
-            team: "Women's",
+            team: "Women",
             date: "02/02/25",
             opponent: "Stanford",
             isHomeGame: false,
@@ -395,7 +395,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 48,
-            team: "Men's",
+            team: "Men",
             date: "02/08/25",
             opponent: "Pittsburgh",
             isHomeGame: true,
@@ -403,7 +403,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 49,
-            team: "Women's",
+            team: "Women",
             date: "02/09/25",
             opponent: "Clemson",
             isHomeGame: false,
@@ -411,7 +411,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 50,
-            team: "Men's",
+            team: "Men",
             date: "02/10/25",
             opponent: "Clemson",
             isHomeGame: false,
@@ -419,7 +419,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 51,
-            team: "Women's",
+            team: "Women",
             date: "02/13/25",
             opponent: "Virginia Tech",
             isHomeGame: true,
@@ -427,7 +427,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 52,
-            team: "Men's",
+            team: "Men",
             date: "02/15/25",
             opponent: "Syracuse",
             isHomeGame: false,
@@ -435,7 +435,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 53,
-            team: "Women's",
+            team: "Women",
             date: "02/16/25",
             opponent: "NC State",
             isHomeGame: true,
@@ -443,7 +443,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 54,
-            team: "Men's",
+            team: "Men",
             date: "02/19/25",
             opponent: "NC State",
             isHomeGame: true,
@@ -451,7 +451,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 55,
-            team: "Women's",
+            team: "Women",
             date: "02/20/25",
             opponent: "Syracuse",
             isHomeGame: false,
@@ -459,7 +459,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 56,
-            team: "Men's",
+            team: "Men",
             date: "02/22/25",
             opponent: "Virginia",
             isHomeGame: true,
@@ -467,7 +467,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 57,
-            team: "Women's",
+            team: "Women",
             date: "02/23/25",
             opponent: "Louisville",
             isHomeGame: false,
@@ -475,7 +475,7 @@ enum BasketballData {
         ),
         BasketballGame(
             id: 58,
-            team: "Men's",
+            team: "Men",
             date: "02/24/25",
             opponent: "Florida St.",
             isHomeGame: false,
