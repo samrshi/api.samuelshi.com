@@ -28,6 +28,7 @@ public func configure(_ app: Application) async throws {
 
     // Add migrations
     app.migrations.add(CreateTodo())
+    app.migrations.add(CreateNotesTable())
     
     // Run migrations on startup
     try await app.autoMigrate()
