@@ -22,10 +22,16 @@ final class NoteModel: Model, @unchecked Sendable {
                 throw Abort(.internalServerError, reason: "NoteModel → NoteContent conversion failed.")
             }
             
+            let dateFormat = Date.FormatStyle(
+                date: .numeric,
+                time: .shortened,
+                timeZone: .init(identifier: "America/New_York") ?? .gmt
+            )
+            
             return NoteContent(
                 id: id,
                 contents: contents,
-                timestamp: timestamp.formatted()
+                timestamp: timestamp.formatted(dateFormat)
             )
         }
     }
