@@ -25,6 +25,7 @@ final class NoteModel: Model, @unchecked Sendable {
             let dateFormat = Date.FormatStyle(
                 date: .numeric,
                 time: .shortened,
+                locale: .init(identifier: "en_US"),
                 timeZone: .init(identifier: "America/New_York") ?? .gmt
             )
             
