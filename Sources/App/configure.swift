@@ -26,10 +26,18 @@ public func configure(_ app: Application) async throws {
         app.databases.use(.postgres(configuration: localConfig), as: .psql)
     }
 
-    // Add migrations
+    // Todo migrations
     app.migrations.add(CreateTodo())
+    
+    // Notes app migrations
     app.migrations.add(CreateNotesTable())
     
+    // Nicknack migrations
+    app.migrations.add(CreateCommunities())
+    app.migrations.add(CreatePosts())
+    app.migrations.add(CreateVotes())
+    app.migrations.add(CreateCommunityMembers())
+
     // Run migrations on startup
     try await app.autoMigrate()
 

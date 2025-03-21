@@ -1,5 +1,5 @@
 //
-//  NotesAuthMiddleware.swift
+//  PIDAuthMiddleware.swift
 //  api
 //
 //  Created by Samuel Shi on 3/4/25.
@@ -8,7 +8,7 @@
 import Vapor
 
 /// Bad, terrible, insecure auth middleware for demo purposes only.
-struct NotesAuthMiddleware: AsyncMiddleware {
+struct PIDAuthMiddleware: AsyncMiddleware {
     func respond(
         to request: Request,
         chainingTo next: any AsyncResponder
@@ -24,7 +24,7 @@ struct NotesAuthMiddleware: AsyncMiddleware {
             throw Abort(.unauthorized, reason: "Invalid API key.")
         }
         
-        request.auth.login(NotesUser(pid: pid))
+        request.auth.login(PIDUser(pid: pid))
         return try await next.respond(to: request)
     }
 }

@@ -15,4 +15,5 @@ func routes(_ app: Application) throws {
     try app.register(collection: BasketballRoutes())
     try app.register(collection: WeatherRoutes())
     try app.register(collection: NotesRoutes())
+    try app.register(collection: NicknackRoutes())
 }

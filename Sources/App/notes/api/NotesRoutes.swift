@@ -11,7 +11,7 @@ import Vapor
 struct NotesRoutes: RouteCollection {
     func boot(routes: any RoutesBuilder) throws {
         // Protect routes w/ "authentication"
-        let protected = routes.grouped(NotesAuthMiddleware())
+        let protected = routes.grouped(PIDAuthMiddleware())
         
         // Actual /notes routes
         let routes = protected.grouped("notes")
@@ -21,7 +21,7 @@ struct NotesRoutes: RouteCollection {
     }
     
     func get(request: Request) async throws -> [NoteContent] {
-        let user = try request.auth.require(NotesUser.self)
+        let user = try request.auth.require(PIDUser.self)
         
         return try await NoteModel.query(on: request.db)
             .filter(\.$pid == user.pid)
@@ -30,7 +30,7 @@ struct NotesRoutes: RouteCollection {
     }
     
     func create(request: Request) async throws -> NoteContent {
-        let user = try request.auth.require(NotesUser.self)
+        let user = try request.auth.require(PIDUser.self)
         
         let newNote = try request.content.decode(NewNoteContent.self)
         let noteModel = NoteModel(newNote: newNote, pid: user.pid)
@@ -40,7 +40,7 @@ struct NotesRoutes: RouteCollection {
     }
     
     func delete(request: Request) async throws -> HTTPStatus {
-        let user = try request.auth.require(NotesUser.self)
+        let user = try request.auth.require(PIDUser.self)
         
         let noteID: UUID? = request.parameters.get("id")
         let note: NoteModel? = try await NoteModel.find(noteID, on: request.db)
