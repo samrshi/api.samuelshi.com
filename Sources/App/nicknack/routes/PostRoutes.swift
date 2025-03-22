@@ -28,7 +28,7 @@ struct PostRoutes: RouteCollection {
             .query(on: request.db)
             .sort(\.$timestamp, .descending)
             .all()
-            .map { try $0.content() }
+            .asyncMap { try await $0.content(db: request.db, userPID: user.pid) }
     }
     
     private func createPost(request: Request) async throws -> PostContent {
@@ -39,7 +39,7 @@ struct PostRoutes: RouteCollection {
         let model = PostModel(creatorPID: user.pid, new: new)
         
         try await community.$posts.create(model, on: request.db)
-        return try model.content()
+        return try await model.content(db: request.db, userPID: user.pid)
     }
     
     private func deletePost(request: Request) async throws -> HTTPStatus {

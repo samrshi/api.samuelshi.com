@@ -11,6 +11,7 @@ import Testing
 import VaporTesting
 @testable import App
 
+
 extension TestingHTTPRequest {
     var bearerToken: String {
         get { fatalError() }

@@ -43,15 +43,24 @@ extension PostModel {
 }
 
 extension PostModel {
-    func content() throws -> PostContent {
+    func content(db: Database, userPID: String) async throws -> PostContent {
         guard let timestamp else { throw Abort(.internalServerError) }
+        
+        let votes = try await $votes.get(on: db)
+        
+        let netVotes = votes.reduce(0) { $0 + $1.direction }
+        let userHasUpvoted = votes.contains { $0.creatorPID == userPID && $0.direction == 1 }
+        let userHasDownvoted = votes.contains { $0.creatorPID == userPID && $0.direction == -1 }
         
         return PostContent(
             id: try requireID(),
             communityID: $community.id,
             contents: contents,
             creatorPID: creatorPID,
-            timestamp: timestamp
+            timestamp: timestamp,
+            netVotes: netVotes,
+            userHasUpvoted: userHasUpvoted,
+            userHasDownvoted: userHasDownvoted
         )
     }
 }
