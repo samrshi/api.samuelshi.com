@@ -42,6 +42,7 @@ extension CommunityModel {
     }
     
     convenience init(
+        id: UUID? = nil,
         creatorPID: String,
         communityCode: String,
         name: String,
@@ -49,6 +50,7 @@ extension CommunityModel {
         sfSymbolName: String
     ) {
         self.init()
+        self.id = id
         self.creatorPID = creatorPID
         self.communityCode = communityCode
         self.name = name

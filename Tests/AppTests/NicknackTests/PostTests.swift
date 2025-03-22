@@ -10,267 +10,302 @@ struct PostTests {
     let pidB = "987654321"
     let pidC = "657483920"
     
+    let communityAID = UUID()
+    let communityBID = UUID()
+    
+    func makeCommunityA() -> CommunityModel {
+        CommunityModel(
+            id: communityAID,
+            creatorPID: "123456789",
+            communityCode: "A",
+            name: "A",
+            hexColor: "A",
+            sfSymbolName: "A"
+        )
+    }
+    
     @Test
-    func testNoAPIKey() async throws {
-        try await testEndpoint(.GET, "nicknack", "communities") { _, _ in
-        } afterResponse: { res, _ in
-            #expect(res.status == .badRequest)
+    func testGetPostsEmptyCommunity() async throws {
+        let community = makeCommunityA()
+        
+        try await testEndpoint(.GET, "nicknack/communities/\(communityAID)/posts") { req, db in
+            try await community.create(on: db)
+            req.bearerToken = pidA
+        } afterResponse: { res, db in
+            #expect(res.status == .ok)
+            
+            let posts = try res.content.decode([PostContent].self)
+            #expect(posts == [])
         }
     }
     
     @Test
-    func testBadAPIKey() async throws {
-        try await testEndpoint(.GET, "nicknack", "communities") { req, _ in
-            req.bearerToken = "bad"
-        } afterResponse: { res, _ in
+    func testGetPostsNotMember() async throws {
+        let community = makeCommunityA()
+        
+        try await testEndpoint(.GET, "nicknack/communities/\(communityAID)/posts") { req, db in
+            try await community.create(on: db)
+            req.bearerToken = pidB
+        } afterResponse: { res, db in
             #expect(res.status == .unauthorized)
         }
     }
     
     @Test
-    func testGetCommunitiesNone() async throws {
-        let community = CommunityModel(creatorPID: pidB, communityCode: "0", name: "0", hexColor: "0", sfSymbolName: "0")
+    func testGetPostsBadCommunity() async throws {
+        let community = makeCommunityA()
         
-        try await testEndpoint(.GET, "nicknack", "communities") { req, db in
+        try await testEndpoint(.GET, "nicknack/communities/\(UUID())/posts") { req, db in
             try await community.create(on: db)
-            req.bearerToken = pidA
-        } afterResponse: { res, db in
-            #expect(res.status == .ok)
-            
-            let communities = try res.content.decode([CommunityContent].self)
-            #expect(communities == [])
-        }
-    }
-
-    @Test
-    func testGetCommunitiesJoinedAndCreated() async throws {
-        let communityA = CommunityModel(creatorPID: pidA, communityCode: "A", name: "A", hexColor: "A", sfSymbolName: "A")
-        let communityB = CommunityModel(creatorPID: pidB, communityCode: "B", name: "B", hexColor: "B", sfSymbolName: "B")
-        let membershipA = CommunityMemberModel(userPID: pidA)
-        
-        try await testEndpoint(.GET, "nicknack", "communities") { req, db in
-            try await communityA.create(on: db)
-            try await communityB.create(on: db)
-            try await communityB.$members.create(membershipA, on: db)
-            req.bearerToken = pidA
-        } afterResponse: { res, _ in
-            #expect(res.status == .ok)
-            
-            let actual = try res.content.decode([CommunityContent].self)
-            let expected = try [communityA.content(), communityB.content()]
-            #expect(actual == expected)
-        }
-    }
-    
-    @Test
-    func testCreateCommunity() async throws {
-        let newCommunity = NewCommunityContent(name: "Roommates", hexColor: "ff0000", sfSymbolName: "sun.max")
-        
-        try await testEndpoint(.POST, "nicknack", "communities") { req, db in
             req.bearerToken = pidB
-            try req.content.encode(newCommunity)
         } afterResponse: { res, db in
-            #expect(res.status == .ok)
-            
-            let communities = try await CommunityModel.query(on: db)
-                .all()
-                .map { try $0.content() }
-            
-            #expect(communities.map { $0.name } == [newCommunity.name])
+            #expect(res.status == .notFound)
         }
     }
     
     @Test
-    func testDeleteCommunity() async throws {
-        let community = CommunityModel(creatorPID: pidA, communityCode: "A", name: "A", hexColor: "A", sfSymbolName: "A")
-        let communityID = UUID()
-        community.id = communityID
+    func testGetPostsAsCreator() async throws {
+        let community = makeCommunityA()
+        let postX = PostModel(contents: "X", creatorPID: pidA)
+        let postY = PostModel(contents: "Y", creatorPID: pidA)
         
-        try await testEndpoint(.DELETE, "nicknack", "communities", communityID.uuidString) { req, db in
+        try await testEndpoint(.GET, "nicknack/communities/\(communityAID)/posts") { req, db in
             req.bearerToken = pidA
+            
             try await community.create(on: db)
+            try await community.$posts.create(postX, on: db)
+            try await community.$posts.create(postY, on: db)
+        } afterResponse: { res, db in
+            #expect(res.status == .ok)
+            
+            let posts = try res.content.decode([PostContent].self)
+            let expected = try [postY, postX].map { try $0.content() }
+            #expect(posts == expected)
+        }
+    }
+    
+    @Test
+    func testGetPostsAsMember() async throws {
+        let community = makeCommunityA()
+        let postX = PostModel(contents: "X", creatorPID: pidA)
+        let postY = PostModel(contents: "Y", creatorPID: pidA)
+        
+        let membershipB = CommunityMemberModel(userPID: pidB)
+        
+        try await testEndpoint(.GET, "nicknack/communities/\(communityAID)/posts") { req, db in
+            req.bearerToken = pidB
+            
+            try await community.create(on: db)
+            
+            try await community.$members.create(membershipB, on: db)
+            try await community.$posts.create(postX, on: db)
+            try await community.$posts.create(postY, on: db)
+        } afterResponse: { res, db in
+            #expect(res.status == .ok)
+            
+            let posts = try res.content.decode([PostContent].self)
+            let expected = try [postY, postX].map { try $0.content() }
+            #expect(posts == expected)
+        }
+    }
+    
+    @Test
+    func testCreatePost() async throws {
+        let community = makeCommunityA()
+        let newPost = NewPostContent(contents: "New!")
+        
+        try await testEndpoint(.POST, "nicknack/communities/\(communityAID)/posts") { req, db in
+            req.bearerToken = pidA
+            try req.content.encode(newPost)
+            
+            try await community.create(on: db)
+        } afterResponse: { res, db in
+            #expect(res.status == .ok)
+            
+            let posts = try await community.$posts
+                .get(on: db)
+                .map { $0.contents }
+            
+            #expect(posts == ["New!"])
+        }
+    }
+    
+    @Test
+    func testDeletePost() async throws {
+        let community = makeCommunityA()
+        
+        let postAID = UUID()
+        let postA = PostModel(id: postAID, contents: "A", creatorPID: pidA)
+        let voteA = VoteModel(creatorPID: pidA, direction: 1)
+        
+        let postBID = UUID()
+        let postB = PostModel(id: postBID, contents: "B", creatorPID: pidA)
+        let voteB = VoteModel(creatorPID: pidB, direction: 1)
+        
+        try await testEndpoint(.DELETE, "nicknack/communities/\(communityAID)/posts/\(postAID)") { req, db in
+            req.bearerToken = pidA
+            
+            try await community.create(on: db)
+            
+            try await community.$posts.create(postA, on: db)
+            try await community.$posts.create(postB, on: db)
+            
+            try await postA.$votes.create(voteA, on: db)
+            try await postB.$votes.create(voteB, on: db)
         } afterResponse: { res, db in
             #expect(res.status == .noContent)
             
-            let communities = try await CommunityModel.query(on: db).all()
-            #expect(communities.count == 0)
+            let posts = try await PostModel.query(on: db).all().map { $0.contents }
+            #expect(posts == ["B"])
+            
+            let votes = try await VoteModel.query(on: db).all().map { $0.creatorPID }
+            #expect(votes == [pidB])
         }
     }
     
     @Test
-    func testDeleteCommunityNotFound() async throws {
-        let communityID = UUID()
+    func testDeletePostNotFound() async throws {
+        let community = makeCommunityA()
         
-        try await testEndpoint(.DELETE, "nicknack", "communities", communityID.uuidString) { req, db in
+        let postAID = UUID()
+        let postA = PostModel(id: postAID, contents: "A", creatorPID: pidA)
+        let voteA = VoteModel(creatorPID: pidA, direction: 1)
+        
+        try await testEndpoint(.DELETE, "nicknack/communities/\(communityAID)/posts/\(UUID())") { req, db in
             req.bearerToken = pidA
+            
+            try await community.create(on: db)
+            
+            try await community.$posts.create(postA, on: db)
+            try await postA.$votes.create(voteA, on: db)
         } afterResponse: { res, db in
             #expect(res.status == .notFound)
+            
+            let posts = try await PostModel.query(on: db).all().map { $0.contents }
+            #expect(posts == ["A"])
+            
+            let votes = try await VoteModel.query(on: db).all().map { $0.creatorPID }
+            #expect(votes == [pidA])
         }
     }
     
     @Test
-    func testDeleteCommunityUnauthorized() async throws {
-        let community = CommunityModel(creatorPID: pidB, communityCode: "B", name: "B", hexColor: "B", sfSymbolName: "B")
-        let communityID = UUID()
-        community.id = communityID
+    func testDeletePostNotAuthorized() async throws {
+        let community = makeCommunityA()
         
-        try await testEndpoint(.DELETE, "nicknack", "communities", communityID.uuidString) { req, db in
-            req.bearerToken = pidA
+        let postAID = UUID()
+        let postA = PostModel(id: postAID, contents: "A", creatorPID: pidA)
+        let voteA = VoteModel(creatorPID: pidA, direction: 1)
+        
+        let membershipB = CommunityMemberModel(userPID: pidB)
+        
+        try await testEndpoint(.DELETE, "nicknack/communities/\(communityAID)/posts/\(postAID)") { req, db in
+            req.bearerToken = pidB
+            
             try await community.create(on: db)
+            
+            try await community.$members.create(membershipB, on: db)
+            try await community.$posts.create(postA, on: db)
+            try await postA.$votes.create(voteA, on: db)
         } afterResponse: { res, db in
             #expect(res.status == .unauthorized)
-        }
-    }
-    
-    @Test
-    func testChangeMembershipNotFound() async throws {
-        try await testEndpoint(.PUT, "nicknack/communities/\(UUID())/membership") { req, db in
-            req.bearerToken = pidA
-        } afterResponse: { res, db in
-            #expect(res.status == .notFound)
             
-            let count = try await CommunityMemberModel.query(on: db).count().get()
-            #expect(count == 0)
+            let posts = try await PostModel.query(on: db).all().map { $0.contents }
+            #expect(posts == ["A"])
+            
+            let votes = try await VoteModel.query(on: db).all().map { $0.creatorPID }
+            #expect(votes == [pidA])
         }
     }
     
     @Test
-    func testChangeMembershipNoDirection() async throws {
-        let community = CommunityModel(creatorPID: pidB, communityCode: "B", name: "B", hexColor: "B", sfSymbolName: "B")
-        let communityID = UUID()
-        community.id = communityID
+    func testVoteNoDirection() async throws {
+        let community = makeCommunityA()
+        
+        let postID = UUID()
+        let post = PostModel(id: postID, contents: "A", creatorPID: pidA)
 
-        try await testEndpoint(.PUT, "nicknack/communities/\(communityID)/membership") { req, db in
+        try await testEndpoint(.PUT, "nicknack/communities/\(communityAID)/posts/\(postID)/vote") { req, db in
             req.bearerToken = pidA
-
+            
             try await community.create(on: db)
+            try await community.$posts.create(post, on: db)
         } afterResponse: { res, db in
             #expect(res.status == .badRequest)
-            #expect(res.content["reason"] == "Must provide direction (join or leave).")
             
-            let count = try await CommunityMemberModel.query(on: db).count().get()
-            #expect(count == 0)
+            let votes = try await VoteModel.query(on: db).all()
+            #expect(votes == [])
         }
     }
     
     @Test
-    func testChangeMembershipBadDirection() async throws {
-        let community = CommunityModel(creatorPID: pidB, communityCode: "B", name: "B", hexColor: "B", sfSymbolName: "B")
-        let communityID = UUID()
-        community.id = communityID
+    func testVoteBadDirection() async throws {
+        let community = makeCommunityA()
+        
+        let postID = UUID()
+        let post = PostModel(id: postID, contents: "A", creatorPID: pidA)
 
-        try await testEndpoint(.PUT, "nicknack/communities/\(communityID)/membership") { req, db in
+        try await testEndpoint(.PUT, "nicknack/communities/\(communityAID)/posts/\(postID)/vote") { req, db in
             try req.content.encode("{ \"direction\": \"bad\" }")
             req.bearerToken = pidA
             req.headers.contentType = .json
 
             try await community.create(on: db)
+            try await community.$posts.create(post, on: db)
         } afterResponse: { res, db in
             #expect(res.status == .badRequest)
-            #expect(res.content["reason"] == "Direction must be either join or leave.")
             
-            let count = try await CommunityMemberModel.query(on: db).count().get()
-            #expect(count == 0)
+            let votes = try await VoteModel.query(on: db).all()
+            #expect(votes == [])
         }
     }
     
-    @Test
-    func testChangeMembershipJoin() async throws {
-        let community = CommunityModel(creatorPID: pidB, communityCode: "B", name: "B", hexColor: "B", sfSymbolName: "B")
-        let communityID = UUID()
-        community.id = communityID
+    @Test(arguments: [VoteDirection.up, VoteDirection.down, VoteDirection.none])
+    func testVoteNew(direction: VoteDirection) async throws {
+        let community = makeCommunityA()
         
-        try await testEndpoint(.PUT, "nicknack/communities/\(communityID)/membership") { req, db in
-            try req.content.encode("{ \"direction\": \"join\" }")
+        let postID = UUID()
+        let post = PostModel(id: postID, contents: "A", creatorPID: pidA)
+
+        try await testEndpoint(.PUT, "nicknack/communities/\(communityAID)/posts/\(postID)/vote") { req, db in
+            try req.content.encode("{ \"direction\": \"\(direction.jsonValue)\" }")
             req.bearerToken = pidA
             req.headers.contentType = .json
 
             try await community.create(on: db)
+            try await community.$posts.create(post, on: db)
         } afterResponse: { res, db in
             #expect(res.status == .ok)
             
-            let joinedCommunities = try await CommunityMemberModel.query(on: db)
-                .filter(\.$userPID == pidA)
-                .all()
-                .map { $0.$community.id }
-            #expect(joinedCommunities == [communityID])
+            let votes = try await post.$votes.get(on: db)
             
-            
-            let communityMembers = try await community.$members.get(on: db)
-                .map { $0.userPID }
-            #expect(communityMembers == [pidA])
+            #expect(votes.map { $0.creatorPID } == [pidA])
+            #expect(votes.map { $0.direction } == [direction.effectValue])
         }
     }
     
-    @Test
-    func testChangeMembershipJoinRedundant() async throws {
-        let community = CommunityModel(creatorPID: pidB, communityCode: "B", name: "B", hexColor: "B", sfSymbolName: "B")
-        let membershipA = CommunityMemberModel(userPID: pidA)
+    @Test(arguments: [VoteDirection.up, VoteDirection.down, VoteDirection.none], [VoteDirection.up, VoteDirection.down, VoteDirection.none])
+    func testVoteNew(initialDirection: VoteDirection, newDirection: VoteDirection) async throws {
+        let community = makeCommunityA()
         
-        let communityID = UUID()
-        community.id = communityID
-        
-        try await testEndpoint(.PUT, "nicknack/communities/\(communityID)/membership") { req, db in
-            try req.content.encode("{ \"direction\": \"join\" }")
+        let postID = UUID()
+        let post = PostModel(id: postID, contents: "A", creatorPID: pidA)
+        let vote = VoteModel(creatorPID: pidA, direction: initialDirection.effectValue)
+
+        try await testEndpoint(.PUT, "nicknack/communities/\(communityAID)/posts/\(postID)/vote") { req, db in
+            try req.content.encode("{ \"direction\": \"\(newDirection.jsonValue)\" }")
             req.bearerToken = pidA
             req.headers.contentType = .json
 
             try await community.create(on: db)
-            try await community.$members.create(membershipA, on: db)
+            try await community.$posts.create(post, on: db)
         } afterResponse: { res, db in
             #expect(res.status == .ok)
             
-            let joinedCommunities = try await CommunityMemberModel.query(on: db)
-                .filter(\.$userPID == pidA)
-                .all()
-                .map { $0.$community.id }
-            #expect(joinedCommunities == [communityID])
+            let votes = try await post.$votes.get(on: db)
             
-            
-            let communityMembers = try await community.$members.get(on: db)
-                .map { $0.userPID }
-            #expect(communityMembers == [pidA])
+            #expect(votes.map { $0.creatorPID } == [pidA])
+            #expect(votes.map { $0.direction } == [newDirection.effectValue])
         }
     }
-    
-    @Test
-    func testChangeMembershipLeave() async throws {
-        let community1 = CommunityModel(creatorPID: pidB, communityCode: "B", name: "B", hexColor: "B", sfSymbolName: "B")
-        let community2 = CommunityModel(creatorPID: pidB, communityCode: "B2", name: "B2", hexColor: "B2", sfSymbolName: "B2")
-        
-        let membershipA1 = CommunityMemberModel(userPID: pidA)
-        let membershipA2 = CommunityMemberModel(userPID: pidA)
-        let membershipC1 = CommunityMemberModel(userPID: pidC)
-
-        let community1ID = UUID()
-        community1.id = community1ID
-        
-        let community2ID = UUID()
-        community2.id = community2ID
-        
-        try await testEndpoint(.PUT, "nicknack/communities/\(community1ID)/membership") { req, db in
-            try req.content.encode("{ \"direction\": \"leave\" }")
-            req.bearerToken = pidA
-            req.headers.contentType = .json
-
-            try await community1.create(on: db)
-            try await community1.$members.create(membershipA1, on: db)
-            try await community1.$members.create(membershipC1, on: db)
-
-            try await community2.create(on: db)
-            try await community2.$members.create(membershipA2, on: db)
-        } afterResponse: { res, db in
-            #expect(res.status == .ok)
-            
-            let joinedCommunities = try await CommunityMemberModel.query(on: db)
-                .filter(\.$userPID == pidA)
-                .all()
-                .map { $0.$community.id }
-            #expect(joinedCommunities == [community2ID])
-           
-            
-            let communityMembers = try await community1.$members.get(on: db)
-                .map { $0.userPID }
-            #expect(communityMembers == [pidC])
-        }
-    }}
+}

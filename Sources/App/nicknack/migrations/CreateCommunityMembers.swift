@@ -13,7 +13,7 @@ struct CreateCommunityMembers: AsyncMigration {
         try await database.schema(CommunityMemberModel.schema)
             .id()
             .field("user_pid", .string, .required)
-            .field("community_id", .uuid, .required, .references(CommunityModel.schema, "id"))
+            .field("community_id", .uuid, .required, .references(CommunityModel.schema, "id", onDelete: .cascade))
             .create()
     }
     
