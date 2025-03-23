@@ -54,17 +54,17 @@ struct PostRoutes: RouteCollection {
         return .noContent
     }
     
-    private func vote(request: Request) async throws -> HTTPStatus {
+    private func vote(request: Request) async throws -> PostContent {
         
         let user = try request.auth.require(PIDUser.self)
         let post = try await readPost(for: request, user: user)
 
-        guard let rawDirection: String? = request.content["direction"] else {
-            throw Abort(.badRequest, reason: "Must provide a direction (up, down, null).")
+        guard let rawVoteType: String = request.content["action"] else {
+            throw Abort(.badRequest, reason: "Must provide a vote type (upvote, downvote, remove).")
         }
         
-        guard let direction = VoteDirection(string: rawDirection) else {
-            throw Abort(.badRequest, reason: "Invalid direction. Must be up, down, or null.")
+        guard let voteType = VoteAction(rawValue: rawVoteType) else {
+            throw Abort(.badRequest, reason: "Invalid vote type. Must be `upvote`, `downvote`, or `remove`.")
         }
         
         let existingVote = try await post.$votes
@@ -73,14 +73,14 @@ struct PostRoutes: RouteCollection {
             .first()
 
         if let existingVote {
-            existingVote.direction = direction.effectValue
+            existingVote.value = voteType.intValue
             try await existingVote.update(on: request.db)
         } else {
-            let vote = VoteModel(creatorPID: user.pid, direction: direction.effectValue)
+            let vote = VoteModel(creatorPID: user.pid, value: voteType.intValue)
             try await post.$votes.create(vote, on: request.db)
         }
         
-        return .ok
+        return try await post.content(db: request.db, userPID: user.pid)
     }
 }
 
@@ -124,37 +124,16 @@ extension PostRoutes {
     }
 }
 
-enum VoteDirection {
-    case up
-    case down
-    case none
+enum VoteAction: String {
+    case up = "upvote"
+    case down = "downvote"
+    case remove = "remove"
     
-    init?(string: String?) {
-        switch string {
-        case "up":
-            self = .up
-        case "down":
-            self = .down
-        case "null":
-            self = .none
-        default:
-            return nil
-        }
-    }
-    
-    var effectValue: Int {
+    var intValue: Int {
         switch self {
         case .up: 1
         case .down: -1
-        case .none: 0
-        }
-    }
-    
-    var jsonValue: String {
-        switch self {
-        case .up: "up"
-        case .down: "down"
-        case .none: "null"
+        case .remove: 0
         }
     }
 }

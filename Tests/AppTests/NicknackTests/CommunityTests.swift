@@ -214,7 +214,7 @@ struct CommunityTests {
             try await community.create(on: db)
         } afterResponse: { res, db in
             #expect(res.status == .badRequest)
-            #expect(res.content["reason"] == "Must provide direction (join or leave).")
+            #expect(res.content["reason"] == "Must provide action (join or leave).")
             
             let count = try await CommunityMemberModel.query(on: db).count().get()
             #expect(count == 0)
@@ -230,7 +230,7 @@ struct CommunityTests {
             try req.content.encode("""
             {
                 "communityCode": "\(community.communityCode)",
-                "direction": "bad"
+                "action": "bad"
             }
             """)
             req.bearerToken = pidA
@@ -239,7 +239,7 @@ struct CommunityTests {
             try await community.create(on: db)
         } afterResponse: { res, db in
             #expect(res.status == .badRequest)
-            #expect(res.content["reason"] == "Direction must be either join or leave.")
+            #expect(res.content["reason"] == "Action must be either `join` or `leave`.")
             
             let count = try await CommunityMemberModel.query(on: db).count().get()
             #expect(count == 0)
@@ -254,7 +254,7 @@ struct CommunityTests {
             try req.content.encode("""
             {
                 "communityCode": "\(community.communityCode)",
-                "direction": "join"
+                "action": "join"
             }
             """)
             req.bearerToken = pidB
@@ -276,7 +276,7 @@ struct CommunityTests {
             try req.content.encode("""
             {
                 "communityCode": "\(community.communityCode)",
-                "direction": "join"
+                "action": "join"
             }
             """)
             req.bearerToken = pidA
@@ -313,7 +313,7 @@ struct CommunityTests {
             try req.content.encode("""
             {
                 "communityCode": "\(community.communityCode)",
-                "direction": "join"
+                "action": "join"
             }
             """)
             req.bearerToken = pidA
@@ -355,7 +355,7 @@ struct CommunityTests {
             try req.content.encode("""
             {
                 "communityCode": "\(community1.communityCode)",
-                "direction": "leave"
+                "action": "leave"
             }
             """)
             req.bearerToken = pidA

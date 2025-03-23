@@ -8,8 +8,13 @@ import Vapor
 public func configure(_ app: Application) async throws {
     // uncomment to serve files from /Public folder
     // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
+    
+    // Set custom JSONEncoder
+    let encoder = JSONEncoder()
+    encoder.dateEncodingStrategy = .iso8601
+    ContentConfiguration.global.use(encoder: encoder, for: .json)
 
-    // Set unp leaf
+    // Set up leaf
     app.views.use(.leaf)
 
     if let databaseURL = Environment.get("DATABASE_URL") {

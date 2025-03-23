@@ -48,9 +48,9 @@ extension PostModel {
         
         let votes = try await $votes.get(on: db)
         
-        let netVotes = votes.reduce(0) { $0 + $1.direction }
-        let userHasUpvoted = votes.contains { $0.creatorPID == userPID && $0.direction == 1 }
-        let userHasDownvoted = votes.contains { $0.creatorPID == userPID && $0.direction == -1 }
+        let netVotes = votes.reduce(0) { $0 + $1.value }
+        let userHasUpvoted = votes.contains { $0.creatorPID == userPID && $0.value == 1 }
+        let userHasDownvoted = votes.contains { $0.creatorPID == userPID && $0.value == -1 }
         
         return PostContent(
             id: try requireID(),

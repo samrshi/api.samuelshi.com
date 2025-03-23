@@ -14,7 +14,7 @@ struct CreateVotes: AsyncMigration {
             .id()
             .field("post_id", .uuid, .required, .references(PostModel.schema, "id", onDelete: .cascade))
             .field("creator_pid", .string, .required)
-            .field("direction", .int8, .required)
+            .field("value", .int, .required)
             .create()
     }
     

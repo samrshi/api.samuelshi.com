@@ -88,16 +88,16 @@ struct CommunityRoutes: RouteCollection {
             throw Abort(.badRequest, reason: "The community creator cannot join/leave their own community.")
         }
         
-        guard let direction: String = request.content["direction"] else {
-            throw Abort(.badRequest, reason: "Must provide direction (join or leave).")
+        guard let action: String = request.content["action"] else {
+            throw Abort(.badRequest, reason: "Must provide action (join or leave).")
         }
 
-        if direction == "join" {
+        if action == "join" {
             return try await join(community: community, pid: user.pid, request: request)
-        } else if direction == "leave" {
+        } else if action == "leave" {
             return try await leave(community: community, pid: user.pid, request: request)
         } else {
-            throw Abort(.badRequest, reason: "Direction must be either join or leave.")
+            throw Abort(.badRequest, reason: "Action must be either `join` or `leave`.")
         }
     }
     

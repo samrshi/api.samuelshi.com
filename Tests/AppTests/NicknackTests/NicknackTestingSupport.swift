@@ -34,6 +34,6 @@ extension PostContent: CustomStringConvertible {
 
 extension VoteModel: Equatable {
     public static func == (lhs: VoteModel, rhs: VoteModel) -> Bool {
-        lhs.creatorPID == rhs.creatorPID && lhs.direction == rhs.direction
+        lhs.creatorPID == rhs.creatorPID && lhs.value == rhs.value
     }
 }

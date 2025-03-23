@@ -114,18 +114,18 @@ struct PostTests {
         let community = makeCommunityA()
         
         let postX = PostModel(contents: "X", creatorPID: pidA)
-        let voteX1 = VoteModel(creatorPID: pidA, direction: 1)
-        let voteX2 = VoteModel(creatorPID: pidB, direction: 1)
-        let voteX3 = VoteModel(creatorPID: pidC, direction: -1)
+        let voteX1 = VoteModel(creatorPID: pidA, value: 1)
+        let voteX2 = VoteModel(creatorPID: pidB, value: 1)
+        let voteX3 = VoteModel(creatorPID: pidC, value: -1)
 
         let postY = PostModel(contents: "Y", creatorPID: pidB)
-        let voteY1 = VoteModel(creatorPID: pidA, direction: 1)
-        let voteY2 = VoteModel(creatorPID: pidB, direction: -1)
-        let voteY3 = VoteModel(creatorPID: pidC, direction: -1)
+        let voteY1 = VoteModel(creatorPID: pidA, value: 1)
+        let voteY2 = VoteModel(creatorPID: pidB, value: -1)
+        let voteY3 = VoteModel(creatorPID: pidC, value: -1)
         
         let postZ = PostModel(contents: "Z", creatorPID: pidC)
-        let voteZ1 = VoteModel(creatorPID: pidA, direction: 1)
-        let voteZ3 = VoteModel(creatorPID: pidC, direction: 1)
+        let voteZ1 = VoteModel(creatorPID: pidA, value: 1)
+        let voteZ3 = VoteModel(creatorPID: pidC, value: 1)
 
         let membershipB = CommunityMemberModel(userPID: pidB)
         let membershipC = CommunityMemberModel(userPID: pidC)
@@ -197,11 +197,11 @@ struct PostTests {
         
         let postAID = UUID()
         let postA = PostModel(id: postAID, contents: "A", creatorPID: pidA)
-        let voteA = VoteModel(creatorPID: pidA, direction: 1)
+        let voteA = VoteModel(creatorPID: pidA, value: 1)
         
         let postBID = UUID()
         let postB = PostModel(id: postBID, contents: "B", creatorPID: pidA)
-        let voteB = VoteModel(creatorPID: pidB, direction: 1)
+        let voteB = VoteModel(creatorPID: pidB, value: 1)
         
         try await testEndpoint(.DELETE, "nicknack/communities/\(communityAID)/posts/\(postAID)") { req, db in
             req.bearerToken = pidA
@@ -230,7 +230,7 @@ struct PostTests {
         
         let postAID = UUID()
         let postA = PostModel(id: postAID, contents: "A", creatorPID: pidA)
-        let voteA = VoteModel(creatorPID: pidA, direction: 1)
+        let voteA = VoteModel(creatorPID: pidA, value: 1)
         
         try await testEndpoint(.DELETE, "nicknack/communities/\(communityAID)/posts/\(UUID())") { req, db in
             req.bearerToken = pidA
@@ -256,7 +256,7 @@ struct PostTests {
         
         let postAID = UUID()
         let postA = PostModel(id: postAID, contents: "A", creatorPID: pidA)
-        let voteA = VoteModel(creatorPID: pidA, direction: 1)
+        let voteA = VoteModel(creatorPID: pidA, value: 1)
         
         let membershipB = CommunityMemberModel(userPID: pidB)
         
@@ -321,15 +321,17 @@ struct PostTests {
         }
     }
     
-    @Test(arguments: [VoteDirection.up, VoteDirection.down, VoteDirection.none])
-    func testVoteNew(direction: VoteDirection) async throws {
+    @Test(arguments: [VoteAction.up, VoteAction.down, VoteAction.remove])
+    func testVoteNew(action: VoteAction) async throws {
         let community = makeCommunityA()
         
         let postID = UUID()
         let post = PostModel(id: postID, contents: "A", creatorPID: pidA)
 
         try await testEndpoint(.PUT, "nicknack/communities/\(communityAID)/posts/\(postID)/vote") { req, db in
-            try req.content.encode("{ \"direction\": \"\(direction.jsonValue)\" }")
+            try req.content.encode("""
+            { "action": "\(action.rawValue)" }
+            """)
             req.bearerToken = pidA
             req.headers.contentType = .json
 
@@ -341,31 +343,35 @@ struct PostTests {
             let votes = try await post.$votes.get(on: db)
             
             #expect(votes.map { $0.creatorPID } == [pidA])
-            #expect(votes.map { $0.direction } == [direction.effectValue])
+            #expect(votes.map { $0.value } == [action.intValue])
         }
     }
     
-    @Test(arguments: [VoteDirection.up, VoteDirection.down, VoteDirection.none], [VoteDirection.up, VoteDirection.down, VoteDirection.none])
-    func testVoteNew(initialDirection: VoteDirection, newDirection: VoteDirection) async throws {
+    @Test(arguments: [VoteAction.up, VoteAction.down, VoteAction.remove], [VoteAction.up, VoteAction.down, VoteAction.remove])
+    func testVoteNew(initialAction: VoteAction, newAction: VoteAction) async throws {
         let community = makeCommunityA()
         
         let postID = UUID()
         let post = PostModel(id: postID, contents: "A", creatorPID: pidA)
+        let vote = VoteModel(creatorPID: pidA, value: initialAction.intValue)
 
         try await testEndpoint(.PUT, "nicknack/communities/\(communityAID)/posts/\(postID)/vote") { req, db in
-            try req.content.encode("{ \"direction\": \"\(newDirection.jsonValue)\" }")
+            try req.content.encode("""
+            { "action": "\(newAction.rawValue)" }
+            """)
             req.bearerToken = pidA
             req.headers.contentType = .json
 
             try await community.create(on: db)
             try await community.$posts.create(post, on: db)
+            try await post.$votes.create(vote, on: db)
         } afterResponse: { res, db in
             #expect(res.status == .ok)
             
             let votes = try await post.$votes.get(on: db)
             
             #expect(votes.map { $0.creatorPID } == [pidA])
-            #expect(votes.map { $0.direction } == [newDirection.effectValue])
+            #expect(votes.map { $0.value } == [newAction.intValue])
         }
     }
 }
