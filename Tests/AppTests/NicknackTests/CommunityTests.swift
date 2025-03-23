@@ -160,13 +160,56 @@ struct CommunityTests {
     }
     
     @Test
+    func testChangeMembershipNoCode() async throws {
+        let communityID = UUID()
+        let community = CommunityModel(id: communityID, creatorPID: pidB, communityCode: "B", name: "B", hexColor: "B", sfSymbolName: "B")
+        
+        try await testEndpoint(.PUT, "nicknack/communities/membership") { req, db in
+            req.bearerToken = pidA
+
+            try await community.create(on: db)
+        } afterResponse: { res, db in
+            #expect(res.status == .badRequest)
+            #expect(res.content["reason"] == "Must provide community code.")
+            
+            let count = try await CommunityMemberModel.query(on: db).count().get()
+            #expect(count == 0)
+        }
+    }
+    
+    @Test
+    func testChangeMembershipBadCode() async throws {
+        try await testEndpoint(.PUT, "nicknack/communities/membership") { req, db in
+            try req.content.encode("""
+            {
+                "communityCode": "xxxxx-xxxxx"
+            }
+            """)
+            req.bearerToken = pidA
+            req.headers.contentType = .json
+        } afterResponse: { res, db in
+            #expect(res.status == .notFound)
+            #expect(res.content["reason"] == "No community found for given community code.")
+            
+            let count = try await CommunityMemberModel.query(on: db).count().get()
+            #expect(count == 0)
+        }
+    }
+    
+    @Test
     func testChangeMembershipNoDirection() async throws {
         let communityID = UUID()
         let community = CommunityModel(id: communityID, creatorPID: pidB, communityCode: "B", name: "B", hexColor: "B", sfSymbolName: "B")
         
-        try await testEndpoint(.PUT, "nicknack/communities/\(communityID)/membership") { req, db in
+        try await testEndpoint(.PUT, "nicknack/communities/membership") { req, db in
+            try req.content.encode("""
+            {
+                "communityCode": "\(community.communityCode)"
+            }
+            """)
             req.bearerToken = pidA
-            
+            req.headers.contentType = .json
+
             try await community.create(on: db)
         } afterResponse: { res, db in
             #expect(res.status == .badRequest)
@@ -182,8 +225,13 @@ struct CommunityTests {
         let communityID = UUID()
         let community = CommunityModel(id: communityID, creatorPID: pidB, communityCode: "B", name: "B", hexColor: "B", sfSymbolName: "B")
         
-        try await testEndpoint(.PUT, "nicknack/communities/\(communityID)/membership") { req, db in
-            try req.content.encode("{ \"direction\": \"bad\" }")
+        try await testEndpoint(.PUT, "nicknack/communities/membership") { req, db in
+            try req.content.encode("""
+            {
+                "communityCode": "\(community.communityCode)",
+                "direction": "bad"
+            }
+            """)
             req.bearerToken = pidA
             req.headers.contentType = .json
             
@@ -202,14 +250,23 @@ struct CommunityTests {
         let communityID = UUID()
         let community = CommunityModel(id: communityID, creatorPID: pidB, communityCode: "B", name: "B", hexColor: "B", sfSymbolName: "B")
 
-        try await testEndpoint(.PUT, "nicknack/communities/\(communityID)/membership") { req, db in
-            try req.content.encode("{ \"direction\": \"join\" }")
+        try await testEndpoint(.PUT, "nicknack/communities/membership") { req, db in
+            try req.content.encode("""
+            {
+                "communityCode": "\(community.communityCode)",
+                "direction": "join"
+            }
+            """)
             req.bearerToken = pidA
             req.headers.contentType = .json
             
             try await community.create(on: db)
         } afterResponse: { res, db in
             #expect(res.status == .ok)
+            
+            let body = try res.content.decode(CommunityContent.self)
+            let expected = try community.content()
+            #expect(body == expected)
             
             let joinedCommunities = try await CommunityMemberModel.query(on: db)
                 .filter(\.$userPID == pidA)
@@ -229,8 +286,13 @@ struct CommunityTests {
         let community = CommunityModel(id: communityID, creatorPID: pidB, communityCode: "B", name: "B", hexColor: "B", sfSymbolName: "B")
         let membershipA = CommunityMemberModel(userPID: pidA)
         
-        try await testEndpoint(.PUT, "nicknack/communities/\(communityID)/membership") { req, db in
-            try req.content.encode("{ \"direction\": \"join\" }")
+        try await testEndpoint(.PUT, "nicknack/communities/membership") { req, db in
+            try req.content.encode("""
+            {
+                "communityCode": "\(community.communityCode)",
+                "direction": "join"
+            }
+            """)
             req.bearerToken = pidA
             req.headers.contentType = .json
             
@@ -238,6 +300,10 @@ struct CommunityTests {
             try await community.$members.create(membershipA, on: db)
         } afterResponse: { res, db in
             #expect(res.status == .ok)
+            
+            let body = try res.content.decode(CommunityContent.self)
+            let expected = try community.content()
+            #expect(body == expected)
             
             let joinedCommunities = try await CommunityMemberModel.query(on: db)
                 .filter(\.$userPID == pidA)
@@ -262,8 +328,13 @@ struct CommunityTests {
         let membershipA2 = CommunityMemberModel(userPID: pidA)
         let membershipC1 = CommunityMemberModel(userPID: pidC)
         
-        try await testEndpoint(.PUT, "nicknack/communities/\(community1ID)/membership") { req, db in
-            try req.content.encode("{ \"direction\": \"leave\" }")
+        try await testEndpoint(.PUT, "nicknack/communities/membership") { req, db in
+            try req.content.encode("""
+            {
+                "communityCode": "\(community1.communityCode)",
+                "direction": "leave"
+            }
+            """)
             req.bearerToken = pidA
             req.headers.contentType = .json
             

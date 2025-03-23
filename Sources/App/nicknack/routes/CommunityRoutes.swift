@@ -12,10 +12,10 @@ struct CommunityRoutes: RouteCollection {
     func boot(routes communities: any RoutesBuilder) throws {
         communities.get { try await getCommunities(request: $0) }
         communities.post { try await createCommunity(request: $0) }
-                
+        communities.put("membership") { try await changeMembership(request: $0) }
+
         try communities.group(":community-id") { community in
             community.delete { try await deleteCommunity(request: $0) }
-            community.put("membership") { try await changeMembership(request: $0) }
             
             try community
                 .grouped("posts")
@@ -68,15 +68,20 @@ struct CommunityRoutes: RouteCollection {
         return .noContent
     }
     
-    private func changeMembership(request: Request) async throws -> HTTPStatus {
+    private func changeMembership(request: Request) async throws -> CommunityContent {
         // TODO: Community code should be case insensitive
         let user = try request.auth.require(PIDUser.self)
 
-        let communityID: UUID? = request.parameters.get("community-id")
-        let community = try await CommunityModel.find(communityID, on: request.db)
+        guard let communityCode: String = request.content["communityCode"] else {
+            throw Abort(.badRequest, reason: "Must provide community code.")
+        }
+        
+        let community = try await CommunityModel.query(on: request.db)
+            .filter(\.$communityCode == communityCode)
+            .first()
         
         guard let community else {
-            throw Abort(.notFound, reason: "Community not found.")
+            throw Abort(.notFound, reason: "No community found for given community code.")
         }
         
         guard let direction: String = request.content["direction"] else {
@@ -92,31 +97,31 @@ struct CommunityRoutes: RouteCollection {
         }
     }
     
-    private func join(community: CommunityModel, pid: String, request: Request) async throws -> HTTPStatus {
+    private func join(community: CommunityModel, pid: String, request: Request) async throws -> CommunityContent {
         let members = try await community.$members.get(on: request.db)
         let alreadyAMember = members.contains { $0.userPID == pid }
         
         guard !alreadyAMember else {
-            return HTTPStatus(statusCode: 200, reasonPhrase: "User was already a member.")
+            return try community.content()
         }
         
         let membership = CommunityMemberModel(userPID: pid)
         try await community.$members.create(membership, on: request.db)
-        return .ok
+        return try community.content()
     }
     
-    private func leave(community: CommunityModel, pid: String, request: Request) async throws -> HTTPStatus {
+    private func leave(community: CommunityModel, pid: String, request: Request) async throws -> CommunityContent {
         let members = try await community.$members.get(on: request.db)
         let userMemberships = members.filter { $0.userPID == pid }
         
         guard !userMemberships.isEmpty else {
-            return .ok
+            return try community.content()
         }
         
         for membership in userMemberships {
             try await membership.delete(on: request.db)
         }
         
-        return .ok
+        return try community.content()
     }
 }

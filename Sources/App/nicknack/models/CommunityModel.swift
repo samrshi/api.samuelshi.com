@@ -64,9 +64,10 @@ extension CommunityModel {
         CommunityContent(
             id: try requireID(),
             name: name,
+            creatorPID: creatorPID,
+            communityCode: communityCode,
             hexColor: hexColor,
-            sfSymbolName: sfSymbolName,
-            communityCode: communityCode
+            sfSymbolName: sfSymbolName
         )
     }
 }
