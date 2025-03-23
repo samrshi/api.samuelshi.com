@@ -247,6 +247,27 @@ struct CommunityTests {
     }
     
     @Test
+    func testChangeMembershipCreator() async throws {
+        let community = CommunityModel(creatorPID: pidB, communityCode: "B", name: "B", hexColor: "B", sfSymbolName: "B")
+
+        try await testEndpoint(.PUT, "nicknack/communities/membership") { req, db in
+            try req.content.encode("""
+            {
+                "communityCode": "\(community.communityCode)",
+                "direction": "join"
+            }
+            """)
+            req.bearerToken = pidB
+            req.headers.contentType = .json
+            
+            try await community.create(on: db)
+        } afterResponse: { res, db in
+            #expect(res.status == .badRequest)
+            #expect(res.content["reason"] == "The community creator cannot join/leave their own community.")
+        }
+    }
+    
+    @Test
     func testChangeMembershipJoin() async throws {
         let communityID = UUID()
         let community = CommunityModel(id: communityID, creatorPID: pidB, communityCode: "B", name: "B", hexColor: "B", sfSymbolName: "B")

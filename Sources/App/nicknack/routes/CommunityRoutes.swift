@@ -84,6 +84,10 @@ struct CommunityRoutes: RouteCollection {
             throw Abort(.notFound, reason: "No community found for given community code.")
         }
         
+        guard user.pid != community.creatorPID else {
+            throw Abort(.badRequest, reason: "The community creator cannot join/leave their own community.")
+        }
+        
         guard let direction: String = request.content["direction"] else {
             throw Abort(.badRequest, reason: "Must provide direction (join or leave).")
         }
