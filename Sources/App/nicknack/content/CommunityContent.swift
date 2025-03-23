@@ -10,9 +10,8 @@ import Vapor
 struct CommunityContent: Content {
     let id: UUID
     let name: String
-    
-    let creatorPID: String
     let communityCode: String
+    let userIsCreator: Bool
     
     let hexColor: String
     let sfSymbolName: String

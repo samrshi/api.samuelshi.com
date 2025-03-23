@@ -57,7 +57,7 @@ struct CommunityTests {
             #expect(res.status == .ok)
             
             let actual = try res.content.decode([CommunityContent].self)
-            let expected = try [communityA.content(), communityB.content()]
+            let expected = try [communityA.content(forPID: pidA), communityB.content(forPID: pidA)]
             #expect(actual == expected)
         }
     }
@@ -74,9 +74,10 @@ struct CommunityTests {
             
             let communities = try await CommunityModel.query(on: db)
                 .all()
-                .map { try $0.content() }
+                .map { try $0.content(forPID: pidB) }
             
             #expect(communities.map { $0.name } == [newCommunity.name])
+            #expect(communities.map { $0.userIsCreator } == [true])
         }
     }
     
@@ -264,9 +265,10 @@ struct CommunityTests {
         } afterResponse: { res, db in
             #expect(res.status == .ok)
             
-            let body = try res.content.decode(CommunityContent.self)
-            let expected = try community.content()
-            #expect(body == expected)
+            let result = try res.content.decode(CommunityContent.self)
+            let expected = try community.content(forPID: pidA)
+            #expect(result == expected)
+            #expect(result.userIsCreator == false)
             
             let joinedCommunities = try await CommunityMemberModel.query(on: db)
                 .filter(\.$userPID == pidA)
@@ -302,7 +304,7 @@ struct CommunityTests {
             #expect(res.status == .ok)
             
             let body = try res.content.decode(CommunityContent.self)
-            let expected = try community.content()
+            let expected = try community.content(forPID: pidA)
             #expect(body == expected)
             
             let joinedCommunities = try await CommunityMemberModel.query(on: db)

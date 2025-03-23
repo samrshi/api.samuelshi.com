@@ -12,10 +12,11 @@ struct PostContent: Content {
     let communityID: UUID
 
     let contents: String
-    let creatorPID: String
     let timestamp: Date
     
     let netVotes: Int
     let userHasUpvoted: Bool
     let userHasDownvoted: Bool
+    
+    let userIsCreator: Bool
 }

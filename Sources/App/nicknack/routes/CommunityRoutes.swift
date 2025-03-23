@@ -30,13 +30,13 @@ struct CommunityRoutes: RouteCollection {
         let createdByUser = try await CommunityModel.query(on: request.db)
             .filter(\.$creatorPID == user.pid)
             .all()
-            .map { try $0.content() }
+            .map { try $0.content(forPID: user.pid) }
         
         let joinedByUser = try await CommunityModel.query(on: request.db)
             .join(children: \.$members)
             .filter(CommunityMemberModel.self, \.$userPID == user.pid)
             .all()
-            .map { try $0.content() }
+            .map { try $0.content(forPID: user.pid) }
 
         return createdByUser + joinedByUser
     }
@@ -47,7 +47,7 @@ struct CommunityRoutes: RouteCollection {
         
         let model = CommunityModel(creatorPID: user.pid, new: new)
         try await model.save(on: request.db)
-        return try model.content()
+        return try model.content(forPID: user.pid)
     }
     
     private func deleteCommunity(request: Request) async throws -> HTTPStatus {
@@ -102,12 +102,12 @@ struct CommunityRoutes: RouteCollection {
         let alreadyAMember = members.contains { $0.userPID == pid }
         
         guard !alreadyAMember else {
-            return try community.content()
+            return try community.content(forPID: pid)
         }
         
         let membership = CommunityMemberModel(userPID: pid)
         try await community.$members.create(membership, on: request.db)
-        return try community.content()
+        return try community.content(forPID: pid)
     }
     
     private func leave(community: CommunityModel, pid: String, request: Request) async throws -> CommunityContent {
@@ -115,13 +115,13 @@ struct CommunityRoutes: RouteCollection {
         let userMemberships = members.filter { $0.userPID == pid }
         
         guard !userMemberships.isEmpty else {
-            return try community.content()
+            return try community.content(forPID: pid)
         }
         
         for membership in userMemberships {
             try await membership.delete(on: request.db)
         }
         
-        return try community.content()
+        return try community.content(forPID: pid)
     }
 }

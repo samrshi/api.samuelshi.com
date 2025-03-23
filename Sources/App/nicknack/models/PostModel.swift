@@ -56,11 +56,11 @@ extension PostModel {
             id: try requireID(),
             communityID: $community.id,
             contents: contents,
-            creatorPID: creatorPID,
             timestamp: timestamp,
             netVotes: netVotes,
             userHasUpvoted: userHasUpvoted,
-            userHasDownvoted: userHasDownvoted
+            userHasDownvoted: userHasDownvoted,
+            userIsCreator: creatorPID == userPID
         )
     }
 }

@@ -60,12 +60,12 @@ extension CommunityModel {
 }
 
 extension CommunityModel {
-    func content() throws -> CommunityContent {
+    func content(forPID pid: String) throws -> CommunityContent {
         CommunityContent(
             id: try requireID(),
             name: name,
-            creatorPID: creatorPID,
             communityCode: communityCode,
+            userIsCreator: pid == creatorPID,
             hexColor: hexColor,
             sfSymbolName: sfSymbolName
         )

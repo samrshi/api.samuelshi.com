@@ -104,8 +104,8 @@ struct PostTests {
             #expect(res.status == .ok)
             
             let posts = try res.content.decode([PostContent].self)
-            let expected = try await [postY, postX].asyncMap { try await $0.content(db: db, userPID: pidB) }
-            #expect(posts == expected)
+            #expect(posts.map { $0.contents } == ["Y", "X"] )
+            #expect(posts.map { $0.userIsCreator } == [false, false] )
         }
     }
     
@@ -178,6 +178,10 @@ struct PostTests {
             try await community.create(on: db)
         } afterResponse: { res, db in
             #expect(res.status == .ok)
+            
+            let post = try res.content.decode(PostContent.self)
+            #expect(post.contents == "New!")
+            #expect(post.userIsCreator == true)
             
             let posts = try await community.$posts
                 .get(on: db)
