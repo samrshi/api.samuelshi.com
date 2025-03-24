@@ -307,7 +307,7 @@ struct PostTests {
         let post = PostModel(id: postID, contents: "A", creatorPID: pidA)
 
         try await testEndpoint(.PUT, "nicknack/communities/\(communityAID)/posts/\(postID)/vote") { req, db in
-            try req.content.encode("{ \"direction\": \"bad\" }")
+            try req.content.encode("{ \"action\": \"bad\" }")
             req.bearerToken = pidA
             req.headers.contentType = .json
 
