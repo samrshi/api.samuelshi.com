@@ -25,6 +25,7 @@ struct NotesRoutes: RouteCollection {
         
         return try await NoteModel.query(on: request.db)
             .filter(\.$pid == user.pid)
+            .sort(\.$timestamp, .descending)
             .all()
             .map { try $0.content }
     }
